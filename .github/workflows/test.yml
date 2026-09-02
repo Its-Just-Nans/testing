@@ -21,17 +21,17 @@ jobs:
           Invoke-WebRequest `
             -Uri "https://github.com/luau-lang/luau/releases/download/0.736/luau-windows.zip" `
             -OutFile "luau-windows.zip"
-      - name: Build
+      - name: Run cmd
         run: ls -Recurse luau-windows.zip
-
       - name: Build
         run: cargo build --release
+      - name: Run cmd
+        run: cargo tree
 
       - name: Run Rust binary
         shell: powershell
         run: |
           .\target\release\testing.exe
-
-      - name: Build
+      - name: Run cmd
         run: ls -Recurse out_dir/
 
