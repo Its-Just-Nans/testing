@@ -1,0 +1,31 @@
+name: Run Rust Binary on Windows
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Download file
+        shell: powershell
+        run: |
+          Invoke-WebRequest `
+            -Uri "https://github.com/luau-lang/luau/releases/download/0.736/luau-windows.zip" `
+            -OutFile "luau-windows.zip"
+
+      - name: Build
+        run: cargo build --release
+
+      - name: Run Rust binary
+        shell: powershell
+        run: |
+          .\target\release\testing.exe
+
