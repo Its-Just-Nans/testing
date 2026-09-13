@@ -26,4 +26,5 @@ jobs:
           ls
           cargo build
           ls
-          cargo run --lat 16.2712 --lng -61.5053
+          cargo run -- --lat 16.2712 --lng -61.5053
+          ls
