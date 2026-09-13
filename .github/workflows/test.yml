@@ -1,8 +1,8 @@
 name: Run Rust Binary on Windows
 
 on:
-  push:
-  workflow_dispatch:
+ # push:
+ # workflow_dispatch:
 
 jobs:
   run:
