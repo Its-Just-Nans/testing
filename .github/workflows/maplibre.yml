@@ -1,0 +1,27 @@
+name: testing
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Run cmd
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to .
+          ls
+          git clone https://github.com/maplibre/maplibre-native-rs.git
+          cd maplibre-native-rs
+          just
+          ls
+          cargo build
+          ls
+          cargo run --lat 16.2712 --lng -61.5053
+
