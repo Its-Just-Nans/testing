@@ -19,9 +19,9 @@ jobs:
           ls
           git clone https://github.com/maplibre/maplibre-native-rs.git
           cd maplibre-native-rs
-          ./just install-dependencies vulkan
-          ./just install-dependencies opengl
-          ./just install-dependencies glx
+          ../just install-dependencies vulkan
+          ../just install-dependencies opengl
+          ../just install-dependencies glx
           ls
           cargo build
           ls
