@@ -24,7 +24,17 @@ jobs:
           ../just install-dependencies glx
           cd ..
           ls
-          cargo build
+          cargo build --release
           ls
           cargo run -- --lat 16.2712 --lng -61.5053 --style "https://dev2.cartes.app/api/styles?key=base"
           ls
+      - name: Artifact upload
+        uses: actions/upload-artifact@main
+        with:
+            name: "map.png"
+            path: "map.png"
+      - name: Artifact upload
+        uses: actions/upload-artifact@main
+        with:
+            name: cartes-placemap
+            path: target/release/cartes-placemap

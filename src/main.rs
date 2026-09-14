@@ -15,6 +15,8 @@ struct AppArgs {
     zoom: f64,
     width: NonZeroU32,
     height: NonZeroU32,
+    bearing: f64,
+    pitch: f64,
     output: PathBuf,
 }
 fn parse_path(s: &std::ffi::OsStr) -> Result<PathBuf, &'static str> {
@@ -48,6 +50,12 @@ fn parse_args() -> Result<AppArgs, pico_args::Error> {
             .opt_value_from_str("--height")?
             .unwrap_or(NonZeroU32::new(512).unwrap()),
         zoom: pargs.opt_value_from_str("--zoom")?.unwrap_or(13.0),
+        bearing: pargs
+            .opt_value_from_str("--bearing")?
+            .unwrap_or(0.0),
+        pitch: pargs
+            .opt_value_from_str("--pitch")?
+            .unwrap_or(0.0),
         output: pargs
             .opt_value_from_os_str("--output", parse_path)?
             .unwrap_or(PathBuf::from("map.png")),
@@ -80,7 +88,10 @@ fn main() {
             lat: args.lat,
             lng: args.lng,
         })
+        .bearing(args.bearing)
+        .pitch(args.pitch)
         .zoom(args.zoom);
+
     let image: Image = match renderer.render_static(&camera) {
         Ok(image) => image,
         Err(err) => {
