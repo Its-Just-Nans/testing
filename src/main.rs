@@ -33,7 +33,21 @@ fn parse_args() -> Result<AppArgs, pico_args::Error> {
 
     // Help has a higher priority and should be handled separately.
     if pargs.contains(["-h", "--help"]) {
-        print!("help");
+        print!(
+            "Usage: BIN [OPTIONS] --lat <LAT> --lng <LNG>
+
+Options:
+    --style <STYLE>        Map style URL
+    --lat <LAT>            Latitude
+    --lng <LNG>            Longitude
+-w, --width <WIDTH>        Image width (default: 512)
+-h, --height <HEIGHT>      Image height (default: 512)
+-z, --zoom <ZOOM>          Map zoom level (default: 13)
+-b, --bearing <BEARING>    Map bearing in degrees (default: 0)
+-p, --pitch <PITCH>        Map pitch in degrees (default: 0)
+-o, --output <OUTPUT>      Output file path (default: map.png)
+    --help                 Print help information"
+        );
         exit(0);
     }
 
@@ -44,20 +58,18 @@ fn parse_args() -> Result<AppArgs, pico_args::Error> {
         lat: pargs.value_from_str("--lat")?,
         lng: pargs.value_from_str("--lng")?,
         width: pargs
-            .opt_value_from_str("--width")?
+            .opt_value_from_str(["-w", "--width"])?
             .unwrap_or(NonZeroU32::new(512).unwrap()),
         height: pargs
-            .opt_value_from_str("--height")?
+            .opt_value_from_str(["-h", "--height"])?
             .unwrap_or(NonZeroU32::new(512).unwrap()),
-        zoom: pargs.opt_value_from_str("--zoom")?.unwrap_or(13.0),
+        zoom: pargs.opt_value_from_str(["-z", "--zoom"])?.unwrap_or(13.0),
         bearing: pargs
-            .opt_value_from_str("--bearing")?
+            .opt_value_from_str(["-b", "--bearing"])?
             .unwrap_or(0.0),
-        pitch: pargs
-            .opt_value_from_str("--pitch")?
-            .unwrap_or(0.0),
+        pitch: pargs.opt_value_from_str(["-p", "--pitch"])?.unwrap_or(0.0),
         output: pargs
-            .opt_value_from_os_str("--output", parse_path)?
+            .opt_value_from_os_str(["-o", "--output"], parse_path)?
             .unwrap_or(PathBuf::from("map.png")),
     };
 
